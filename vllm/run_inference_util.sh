@@ -1,14 +1,14 @@
 #!/bin/bash
 
-#SBATCH --job-name=g2_intersentence
-#SBATCH --output=/home/shailyjb/intrinsic-bias-metaeval/logs/g2_intersentence.out
-#SBATCH --error=/home/shailyjb/intrinsic-bias-metaeval/logs/g2_intersentence.err
+#SBATCH --job-name=llama_instruct_cnn
+#SBATCH --output=/home/ambuja/output/llama_instruct_cnn.out
+#SBATCH --error=/home/ambuja/error/llama_instruct_cnn.err
 #SBATCH --nodes=1
 #SBATCH --mem=16GB
 #SBATCH --time 0-12:55:00
 #SBATCH --partition=cpu
 #SBATCH --mail-type=END
-#SBATCH --mail-user=shailyjb@andrew.cmu.edu
+#SBATCH --mail-user=ambuja@andrew.cmu.edu
 #SBATCH --exclude=shire-1-6,inst-0-35,shire-1-10
 
 
@@ -22,13 +22,12 @@ conda activate pc2
 MAX_TOKENS=50
 
 MODEL_ADDRESS="http://babel-4-23:8081/v1"
-MODEL="google/gemma-2b-it"
-MODEL_NAME="gemma2B_it"
+MODEL="meta-llama/Meta-Llama-3-8B-Instruct"
 
-PROMPTS="/home/shailyjb/intrinsic-bias-metaeval/stereoset_data/intersentence_prompts.csv"
-OUTPUT="/home/shailyjb/intrinsic-bias-metaeval/stereoset_data/gemma2B_predictions/intersentence_responses.tsv"
+PROMPTS="/Users/ambujagrawal/personal/gpa/summarization/data/prompts.csv"
+OUTPUT="/Users/ambujagrawal/personal/gpa/summarization/data/responses.tsv"
 
-python /home/shailyjb/intrinsic-bias-metaeval/stereoset_query.py \
+python query.py \
     --prompts="${PROMPTS}" \
     --output="${OUTPUT}" \
     --model=${MODEL} \

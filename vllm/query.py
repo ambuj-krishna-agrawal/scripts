@@ -30,8 +30,8 @@ ERROR_ERRORS_TO_MESSAGES = {
 
 
 def format_prompt(prompt_input):
-    prompt = prompt_input.split("\t")[-1]
-    return [{"role": "user", "content": prompt}]
+    # prompt = prompt_input.split("\t")[-1]
+    return [{"role": "user", "content": prompt_input}]
 
 
 async def _throttled_openai_chat_completion_acreate(
