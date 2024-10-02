@@ -16,17 +16,18 @@ echo $SLURM_JOB_ID
 
 source ~/.bashrc
 conda init bash
-conda activate pc2
+conda activate vllm
 
 
-MAX_TOKENS=50
+MAX_TOKENS=300
 
-MODEL_ADDRESS="http://babel-4-23:8081/v1"
-MODEL="meta-llama/Meta-Llama-3-8B-Instruct"
+MODEL_ADDRESS="http://babel-3-19:8081/v1"
+MODEL="google/gemma-2-9b-it"
+MODEL_NAME="gemma-2-9b-it"
 
-PROMPTS="/Users/ambujagrawal/personal/gpa/summarization/data/prompts.csv"
-OUTPUT="/Users/ambujagrawal/personal/gpa/summarization/data/responses.tsv"
-
+PROMPTS="/home/ambuja/gpa/summarization/data/prompts.csv"
+OUTPUT="/home/ambuja/gpa/summarization/data/${MODEL_NAME}_responses.tsv"
+ 
 python query.py \
     --prompts="${PROMPTS}" \
     --output="${OUTPUT}" \

@@ -153,11 +153,12 @@ def main(
     results = []
     for prompt, prediction in zip(prompts, predictions):
         prompt = prompt.split("\t")
+        result = []
         for x in range(num_responses_per_prompt):
             if x >= len(prediction.choices):
                 prompt.append("")
                 continue
-            prompt.append(
+            result.append(
                 prediction.choices[x]
                 .message.content.replace("\n", "~| ")
                 .replace("\t", " ")
@@ -167,7 +168,8 @@ def main(
         #     .message.content.replace("\n", "~| ")
         #     .replace("\t", " ")
         # )
-        results.append(tuple(prompt))
+        # results.append(tuple(prompt))
+        results.append(result)
     return results
 
 

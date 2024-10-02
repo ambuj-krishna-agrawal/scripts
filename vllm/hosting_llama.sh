@@ -3,9 +3,9 @@
 #SBATCH --partition=general
 #SBATCH --mem=32GB
 #SBATCH --time 23:00:00
-#SBATCH --job-name=a6_llama3_8b_instruct
-#SBATCH --error=/home/ambuja/error/a6_llama3_8b_instruct.err
-#SBATCH --output=/home/ambuja/output/a6_llama38b_instruct.out
+#SBATCH --job-name=llama3_8b_instruct_gpa
+#SBATCH --error=/home/ambuja/error/llama3_8b_instruct_gpa.err
+#SBATCH --output=/home/ambuja/output/llama3_8b_instruct_gpa.out
 #SBATCH --mail-type=END
 #SBATCH --mail-user=ambuja@andrew.cmu.edu
 
@@ -22,6 +22,7 @@ huggingface-cli login --token "${HUGGINGFACE_TOKEN}"
 conda activate vllm
 
 MODEL="meta-llama/Meta-Llama-3-8B-Instruct" # This is same as the model ID on HF
+
 
 
 PORT=8081
