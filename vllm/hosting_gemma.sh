@@ -1,7 +1,7 @@
 #!/bin/sh
-#SBATCH --gres=gpu:A6000:1
+#SBATCH --gres=gpu:A6000:2
 #SBATCH --partition=general
-#SBATCH --mem=32GB
+#SBATCH --mem=128GB
 #SBATCH --time 23:00:00
 #SBATCH --job-name=gemma-2-9b-it_gpa
 #SBATCH --error=/home/ambuja/error/gemma-2-9b-it_gpa.err
@@ -26,7 +26,7 @@ MODEL="google/gemma-2-9b-it" # This is same as the model ID on HF
 
 
 
-PORT=8081
+PORT=8082
 if ss -tulwn | grep -q ":$PORT "; then
     echo "Port $PORT is already in use. Exiting..."
     exit 1

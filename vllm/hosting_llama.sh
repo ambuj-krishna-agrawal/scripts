@@ -1,5 +1,5 @@
 #!/bin/sh
-#SBATCH --gres=gpu:A6000:1
+#SBATCH --gres=gpu:A6000:2
 #SBATCH --partition=general
 #SBATCH --mem=32GB
 #SBATCH --time 23:00:00
