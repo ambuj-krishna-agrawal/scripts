@@ -1,7 +1,7 @@
 #!/bin/sh
 #SBATCH --gres=gpu:A6000:2
 #SBATCH --partition=general
-#SBATCH --mem=128GB
+#SBATCH --mem=64GB
 #SBATCH --time 23:00:00
 #SBATCH --job-name=gemma-2-9b-it_gpa
 #SBATCH --error=/home/ambuja/error/gemma-2-9b-it_gpa.err
@@ -34,7 +34,8 @@ else
     python -m vllm.entrypoints.openai.api_server \
         --model $MODEL \
         --port $PORT \
-        --download-dir /home/ambuja/download_test/ # Either shared model cache on babel or your own directory
+        --download-dir /home/ambuja/download_test/
+        --tensor-parallel-size 2  # Either shared model cache on babel or your own directory
 fi
 echo $PORT
 

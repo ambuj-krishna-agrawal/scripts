@@ -1,11 +1,11 @@
 #!/bin/sh
 #SBATCH --gres=gpu:A6000:2
 #SBATCH --partition=general
-#SBATCH --mem=32GB
+#SBATCH --mem=64GB
 #SBATCH --time 23:00:00
-#SBATCH --job-name=llama3_8b_instruct_gpa
-#SBATCH --error=/home/ambuja/error/llama3_8b_instruct_gpa.err
-#SBATCH --output=/home/ambuja/output/llama3_8b_instruct_gpa.out
+#SBATCH --job-name=Mistral-7B-Instruct-v0.3_gpa
+#SBATCH --error=/home/ambuja/error/Mistral-7B-Instruct-v0.3.err
+#SBATCH --output=/home/ambuja/output/Mistral-7B-Instruct-v0.3.out
 #SBATCH --mail-type=END
 #SBATCH --mail-user=ambuja@andrew.cmu.edu
 
@@ -21,11 +21,12 @@ huggingface-cli login --token "${HUGGINGFACE_TOKEN}"
 
 conda activate vllm
 
-MODEL="meta-llama/Meta-Llama-3-8B-Instruct" # This is same as the model ID on HF
+MODEL="mistralai/Mistral-7B-Instruct-v0.3" # This is same as the model ID on HF
+# MODEL="meta-llama/Meta-Llama-3-8B-Instruct" # This is same as the model ID on HF
 
 
 
-PORT=8081
+PORT=8083
 if ss -tulwn | grep -q ":$PORT "; then
     echo "Port $PORT is already in use. Exiting..."
     exit 1
@@ -34,7 +35,7 @@ else
         --model $MODEL \
         --port $PORT \
         --download-dir /home/ambuja/download_test/
-        --tensor-parallel-size 2 # Either shared model cache on babel or your own directory
+        --tensor-parallel-size 2  # Either shared model cache on babel or your own directory
 fi
 echo $PORT
 
