@@ -34,7 +34,8 @@ else
     python -m vllm.entrypoints.openai.api_server \
         --model $MODEL \
         --port $PORT \
-        --download-dir /home/ambuja/download_test/
+        --download-dir /scratch/ambuja/model \
+        --tokenizer-mode "mistral" \
         --tensor-parallel-size 2  # Either shared model cache on babel or your own directory
 fi
 echo $PORT
