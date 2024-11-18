@@ -6,10 +6,9 @@
 #SBATCH --nodes=1
 #SBATCH --mem=16GB
 #SBATCH --time 0-12:55:00
-#SBATCH --partition=cpu
+#SBATCH --partition=debug
 #SBATCH --mail-type=END
 #SBATCH --mail-user=ambuja@andrew.cmu.edu
-#SBATCH --exclude=shire-1-6,inst-0-35,shire-1-10
 
 
 echo $SLURM_JOB_ID
@@ -19,14 +18,14 @@ conda init bash
 conda activate vllm
 
 
-MAX_TOKENS=300
+MAX_TOKENS=200
 
-MODEL_ADDRESS="http://inst-0-35:8081/v1"
+MODEL_ADDRESS="http://babel-1-31:8081/v1"
 MODEL="meta-llama/Meta-Llama-3-8B-Instruct"
 MODEL_NAME="Meta-Llama-3-8B-Instruct"
 
-PROMPTS="/home/ambuja/gpa/summarization/data/prompts.csv"
-OUTPUT="/home/ambuja/gpa/summarization/data/${MODEL_NAME}_responses.tsv"
+PROMPTS="/home/ambuja/gpa/summarization/data/new_prompts.csv"
+OUTPUT="/home/ambuja/gpa/summarization/data/${MODEL_NAME}_total_2_responses.tsv"
  
 python query.py \
     --prompts="${PROMPTS}" \

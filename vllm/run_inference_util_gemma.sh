@@ -1,15 +1,14 @@
 #!/bin/bash
 
-#SBATCH --job-name=llama_instruct_cnn
-#SBATCH --output=/home/ambuja/output/llama_instruct_cnn.out
-#SBATCH --error=/home/ambuja/error/llama_instruct_cnn.err
+#SBATCH --job-name=gemma_instruct_cnn
+#SBATCH --output=/home/ambuja/output/gemma_instruct_cnn.out
+#SBATCH --error=/home/ambuja/error/gemma_instruct_cnn.err
 #SBATCH --nodes=1
 #SBATCH --mem=16GB
 #SBATCH --time 0-12:55:00
-#SBATCH --partition=cpu
+#SBATCH --partition=debug
 #SBATCH --mail-type=END
 #SBATCH --mail-user=ambuja@andrew.cmu.edu
-#SBATCH --exclude=shire-1-6,inst-0-35,shire-1-10
 
 
 echo $SLURM_JOB_ID
@@ -21,12 +20,12 @@ conda activate vllm
 
 MAX_TOKENS=300
 
-MODEL_ADDRESS="http://babel-3-19:8081/v1"
+MODEL_ADDRESS="http://babel-0-31:8082/v1"
 MODEL="google/gemma-2-9b-it"
 MODEL_NAME="gemma-2-9b-it"
 
-PROMPTS="/home/ambuja/gpa/summarization/data/prompts.csv"
-OUTPUT="/home/ambuja/gpa/summarization/data/${MODEL_NAME}_responses.tsv"
+PROMPTS="/home/ambuja/gpa/summarization/data/new_prompts.csv"
+OUTPUT="/home/ambuja/gpa/summarization/data/${MODEL_NAME}_total_2_responses.tsv"
  
 python query.py \
     --prompts="${PROMPTS}" \
