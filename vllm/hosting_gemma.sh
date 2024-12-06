@@ -2,12 +2,13 @@
 #SBATCH --gres=gpu:A6000:2
 #SBATCH --partition=general
 #SBATCH --mem=64GB
-#SBATCH --time 23:00:00
+#SBATCH --time 47:00:00
 #SBATCH --job-name=gemma-2-9b-it_gpa
 #SBATCH --error=/home/ambuja/error/gemma-2-9b-it_gpa.err
 #SBATCH --output=/home/ambuja/output/gemma-2-9b-it_gpa.out
 #SBATCH --mail-type=END
 #SBATCH --mail-user=ambuja@andrew.cmu.edu
+#SBATCH --exclude=babel-0-37
 
 mkdir -p /scratch/ambuja/model
 source ~/miniconda3/etc/profile.d/conda.sh

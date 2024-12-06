@@ -9,6 +9,7 @@ import openai
 import pandas as pd
 from openai import AsyncOpenAI
 from tqdm.asyncio import tqdm_asyncio
+import json
 
 # Reference:
 # https://github.com/zeno-ml/zeno-build/blob/3a5dcb2ed8bfdeec0dd2bacf2bea76673399824d/zeno_build/models/providers/openai_utils.py#L118
@@ -27,11 +28,6 @@ ERROR_ERRORS_TO_MESSAGES = {
     openai.RateLimitError: "Rate Limit Error: {e}. You've hit the OpenAI API rate limit.",
     openai.UnprocessableEntityError: "Unprocessable Entity Error: {e}. Unable to process the request despite the format being correct.",
 }
-
-
-def format_prompt(prompt_input):
-    # prompt = prompt_input.split("\t")[-1]
-    return [{"role": "user", "content": prompt_input}]
 
 
 async def _throttled_openai_chat_completion_acreate(
@@ -124,6 +120,7 @@ async def generate_from_openai_chat_completion(
         for message in messages_list
     ]
     responses = await tqdm_asyncio.gather(*async_responses)
+    # print("response generated", responses[0])
     return responses
 
 
@@ -137,11 +134,13 @@ def main(
     requests_per_minute,
     num_responses_per_prompt,
 ):
-    messages_list = [format_prompt(prompt) for prompt in prompts]
+    # messages_list = [format_prompt(prompt) for prompt in prompts]
+    # messages_list = prompts
+    # print(messages_list[0])
     predictions = asyncio.run(
         generate_from_openai_chat_completion(
             client=client,
-            messages_list=messages_list,
+            messages_list=prompts,
             model=model,
             temperature=temperature,
             max_tokens=max_tokens,
@@ -151,6 +150,7 @@ def main(
         )
     )
     results = []
+    # print("generated")
     for prompt, prediction in zip(prompts, predictions):
         prompt = prompt.split("\t")
         result = []
@@ -193,11 +193,33 @@ if __name__ == "__main__":
     argparser.add_argument("--requests_per_minute", type=int, default=150)
     argparser.add_argument("--num_responses_per_prompt", type=int, default=1)
     args = argparser.parse_args()
-    with open(args.prompts) as f:
-        prompts = f.readlines()
-    prompts = [prompt.strip() for prompt in prompts]
-    header = prompts[0].split("\t")
-    prompts = prompts[1:]  # skipping header for now
+    # with open(args.prompts) as f:
+    #     prompts = f.readlines()
+    # prompts = [prompt.strip() for prompt in prompts]
+    # header = prompts[0].split("\t")
+    # prompts = prompts[1:]  # skipping header for now
+
+    all_prompts = []
+    header = ["prompt"]
+    with open(args.prompts, 'r', encoding='utf-8') as jsonfile:
+        all_prompts = json.load(jsonfile)
+
+    prompts = [prompt['prompt'] for prompt in all_prompts]
+
+    print(all_prompts[0])
+    try:
+        print(type(all_prompts[0]))
+        print(all_prompts[0]['prompt'])
+        print(type(all_prompts[0]['prompt']))
+        print(prompts[0][0])
+        print(type(prompts[0][0]))
+        print(prompts[0][1])
+        print(type(prompts[0][1]))
+    except:
+        print("error")
+
+
+    # prompts = [format_prompt(prompt) for prompt in all_prompts]
 
     client = AsyncOpenAI(api_key="EMPTY", base_url=args.base_url)
     results = main(
