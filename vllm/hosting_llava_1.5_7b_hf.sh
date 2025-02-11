@@ -1,11 +1,11 @@
 #!/bin/sh
-#SBATCH --gres=gpu:A6000:1
+#SBATCH --gres=gpu:L40S:2
 #SBATCH --partition=general
-#SBATCH --mem=64GB
+#SBATCH --mem=128GB
 #SBATCH --time 23:00:00
-#SBATCH --job-name=1b_3.2_llama_gpa
-#SBATCH --error=/home/ambuja/logs/error/llama3.2_3_1b_gpa.err
-#SBATCH --output=/home/ambuja/logs/output/llama3.2_1b_gpa.out
+#SBATCH --job-name=13b_llava_1_5
+#SBATCH --error=/home/ambuja/logs/error/13b_llava_1_5_gpa.err
+#SBATCH --output=/home/ambuja/logs/output/13b_llava_1_5_gpa.out
 #SBATCH --mail-type=END
 #SBATCH --mail-user=ambuja@andrew.cmu.edu
 
@@ -14,35 +14,32 @@ source ~/miniconda3/etc/profile.d/conda.sh
 
 
 export HF_HOME=/home/ambuja/hf_cache # Ideally it helps to have <DIR> in `/data/..` on Babel to not overcrowd /home/.. directory
+export NCCL_DEBUG=INFO
+export NCCL_P2P_DISABLE=1
+export NCCL_IB_DISABLE=1
+export NCCL_IB_HCA=mlx5_0
 source ~/.bashrc
-
 conda activate vllm
-python -m pip show transformers
-python -m pip show vllm
 
 HUGGINGFACE_TOKEN="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"
 huggingface-cli login --token "${HUGGINGFACE_TOKEN}"
 
 
 
-MODEL="meta-llama/Llama-3.2-1B" # This is same as the model ID on HF
-# MODEL="meta-llama/Llama-3.1-70B-Instruct"
-# MODEL="meta-llama/Llama-3.2-3B-Instruct"
-
-# MODEL="meta-llama/Llama-3.1-8B-Instruct"
+MODEL="TheBloke/llava-v1.5-13B-AWQ"
 
 
 
-PORT=8083
+PORT=8081
 if ss -tulwn | grep -q ":$PORT "; then
     echo "Port $PORT is already in use. Exiting..."
     exit 1
 else
-    export TRUST_REMOTE_CODE=True  
     python -m vllm.entrypoints.openai.api_server \
         --model $MODEL \
         --port $PORT \
-        --download-dir /home/ambuja/download_test/   
+        --download-dir /scratch/ambuja/model \
+        --trust-remote-code \
+        --tensor-parallel-size 2
 fi
 echo $PORT
-

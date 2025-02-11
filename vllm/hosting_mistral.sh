@@ -20,6 +20,8 @@ HUGGINGFACE_TOKEN="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"
 huggingface-cli login --token "${HUGGINGFACE_TOKEN}"
 
 conda activate vllm
+python -m pip show transformers
+python -m pip show vllm
 
 MODEL="mistralai/Mistral-7B-Instruct-v0.3" # This is same as the model ID on HF
 # MODEL="meta-llama/Meta-Llama-3-8B-Instruct" # This is same as the model ID on HF
@@ -35,7 +37,6 @@ else
         --model $MODEL \
         --port $PORT \
         --download-dir /scratch/ambuja/model \
-        --tokenizer-mode "mistral" \
         --tensor-parallel-size 2  # Either shared model cache on babel or your own directory
 fi
 echo $PORT

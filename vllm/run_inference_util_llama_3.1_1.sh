@@ -6,7 +6,7 @@
 #SBATCH --nodes=1
 #SBATCH --mem=16GB
 #SBATCH --time 0-6:55:00
-#SBATCH --partition=debug
+#SBATCH --partition=general
 #SBATCH --mail-type=END
 #SBATCH --mail-user=ambuja@andrew.cmu.edu
 
@@ -16,12 +16,13 @@ echo $SLURM_JOB_ID
 source ~/.bashrc
 conda init bash
 source ~/anaconda3/etc/profile.d/conda.sh
+
 conda activate vllm
 python -m pip show transformers
 
-MAX_TOKENS=200
+MAX_TOKENS=250
 
-MODEL_ADDRESS="http://babel-0-31:8081/v1"
+MODEL_ADDRESS="http://babel-0-23:8081/v1"
 MODEL="meta-llama/Llama-3.2-1B"
 MODEL_NAME="metallama_3.2_1b"
 

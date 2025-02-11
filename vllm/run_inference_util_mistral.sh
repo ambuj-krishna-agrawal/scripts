@@ -1,15 +1,14 @@
 #!/bin/bash
 
-#SBATCH --job-name=mistral_instruct_cnn
-#SBATCH --output=/home/ambuja/output/mistral_instruct_cnn.out
-#SBATCH --error=/home/ambuja/error/mistral_instruct_cnn.err
+#SBATCH --job-name=mistral_instruct
+#SBATCH --output=/home/ambuja/output/mistral_instruct.out
+#SBATCH --error=/home/ambuja/error/mistral_instruct.err
 #SBATCH --nodes=1
 #SBATCH --mem=16GB
-#SBATCH --time 0-12:55:00
-#SBATCH --partition=general
+#SBATCH --time 0-6:55:00
+#SBATCH --partition=debug
 #SBATCH --mail-type=END
 #SBATCH --mail-user=ambuja@andrew.cmu.edu
-#SBATCH --exclude=shire-1-6,inst-0-35,shire-1-10
 
 
 echo $SLURM_JOB_ID
@@ -19,14 +18,14 @@ conda init bash
 conda activate vllm
 
 
-MAX_TOKENS=200
+MAX_TOKENS=250
 
-MODEL_ADDRESS="http://babel-11-17:8083/v1"
+MODEL_ADDRESS="http://babel-2-29:8083/v1"
 MODEL="mistralai/Mistral-7B-Instruct-v0.3"
-MODEL_NAME="Mistral-7B-Instruct-v0.3"
+MODEL_NAME="Mistral_7B_Instruct_v0.3"
 
-PROMPTS="/home/ambuja/gpa/summarization/data/prompts.csv"
-OUTPUT="/home/ambuja/gpa/summarization/data/${MODEL_NAME}_responses.tsv"
+PROMPTS="/home/ambuja/LLMRouting/data/test_gsm8k_queries.json"
+OUTPUT="/home/ambuja/LLMRouting/data/test_gsm8k_${MODEL_NAME}_responses.tsv"
  
 python query.py \
     --prompts="${PROMPTS}" \

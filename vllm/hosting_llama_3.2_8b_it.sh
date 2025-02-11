@@ -1,11 +1,11 @@
 #!/bin/sh
-#SBATCH --gres=gpu:A6000:1
+#SBATCH --gres=gpu:A6000:2
 #SBATCH --partition=general
 #SBATCH --mem=64GB
 #SBATCH --time 23:00:00
-#SBATCH --job-name=1b_3.2_llama_gpa
-#SBATCH --error=/home/ambuja/logs/error/llama3.2_3_1b_gpa.err
-#SBATCH --output=/home/ambuja/logs/output/llama3.2_1b_gpa.out
+#SBATCH --job-name=70b_3.1_llama_gpa
+#SBATCH --error=/home/ambuja/logs/error/llama3.1_70b_gpa.err
+#SBATCH --output=/home/ambuja/logs/output/llama3.1_70b_gpa.out
 #SBATCH --mail-type=END
 #SBATCH --mail-user=ambuja@andrew.cmu.edu
 
@@ -25,8 +25,8 @@ huggingface-cli login --token "${HUGGINGFACE_TOKEN}"
 
 
 
-MODEL="meta-llama/Llama-3.2-1B" # This is same as the model ID on HF
-# MODEL="meta-llama/Llama-3.1-70B-Instruct"
+# MODEL="meta-llama/Llama-3.2-1B" # This is same as the model ID on HF
+MODEL="meta-llama/Llama-3.1-70B-Instruct"
 # MODEL="meta-llama/Llama-3.2-3B-Instruct"
 
 # MODEL="meta-llama/Llama-3.1-8B-Instruct"
